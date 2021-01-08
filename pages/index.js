@@ -1,65 +1,45 @@
 import Head from 'next/head'
+import { useState } from 'react'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+  const [file, setFile] = useState('')
+  const [filter, setFilter] = useState('')
+  const [lines, setLines] = useState(0)
+  const [results, setResults] = useState(null)
+  const loadResults = () => {
+    fetch('/api/' + file)
+      .then(async (res) => await res.json())
+      .then(result => {
+        setResults(result.text)
+      })
+  }
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Log Searcher</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <h1 className={styles.header}>Log Searcher</h1>
+        <p>Enter the name of the file you would like to search and click Submit.  
+           If you would like to limit the results, you can enter filter text and/or 
+           set the number of lines you would like to see.</p>
+        <form onSubmit={(e)=>{ 
+          e.preventDefault();
+          return false
+        }}>
+          <div className={styles.inputGroup}>
+            <label >File Name:</label>
+            <input className={styles.fileName} type='text' value={file} onChange={e=>setFile(e.target.value)} />
+          </div>
+          <div className={styles.submit}>
+            <button role='submit' onClick={() => loadResults()}>Submit</button>
+          </div>
+        </form>
+        {results && <pre className={styles.results}>{results}</pre>}
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
     </div>
   )
 }

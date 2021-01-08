@@ -18,8 +18,7 @@ export default async (req, res) => {
   }
   const result = await fetch(requestUrl)
   const text = await result.text()
-  console.log(text)
-  res.statusCode = 200
+  res.statusCode = result.status
   res.json({
     text
   })
