@@ -24,6 +24,10 @@
   border-radius: .75em;
 }
 
+.inputGroup + .inputGroup {
+  margin-top: 10px;
+}
+
 .submit {
   margin-top: 8px;
   display: flex;
@@ -36,7 +40,6 @@
   background-color: #1c75db;
   color: white;
   padding: .5em 3em;
-
 }
 
 .results {

@@ -8,7 +8,15 @@ export default function Home() {
   const [lines, setLines] = useState(0)
   const [results, setResults] = useState(null)
   const loadResults = () => {
-    fetch('/api/' + file)
+    let url = '/api/' + file
+    let params = []
+    if(filter) {
+      params.push('filter=' + filter)
+    }
+    if(params.length > 0) {
+      url += '?' + params.join('&')
+    }
+    fetch(url)
       .then(async (res) => await res.json())
       .then(result => {
         setResults(result.text)
@@ -31,8 +39,12 @@ export default function Home() {
           return false
         }}>
           <div className={styles.inputGroup}>
-            <label >File Name:</label>
-            <input className={styles.fileName} type='text' value={file} onChange={e=>setFile(e.target.value)} />
+            <label>File Name:</label>
+            <input type='text' value={file} onChange={e=>setFile(e.target.value)} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Filter Text:</label>
+            <input type='text' value={filter} onChange={e=>setFilter(e.target.value)} />
           </div>
           <div className={styles.submit}>
             <button role='submit' onClick={() => loadResults()}>Submit</button>
