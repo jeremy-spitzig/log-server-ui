@@ -7,7 +7,7 @@ export default async (req, res) => {
   }
   requestUrl += req.query.file.join('/')
   let params = []
-  if(req.query.n) {
+  if(req.query.n && req.query.n > 0) {
     params.push('n=' + req.query.n)
   }
   if(req.query.filter) {

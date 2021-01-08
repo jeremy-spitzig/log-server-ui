@@ -13,6 +13,9 @@ export default function Home() {
     if(filter) {
       params.push('filter=' + filter)
     }
+    if(lines) {
+      params.push('n=' + lines)
+    }
     if(params.length > 0) {
       url += '?' + params.join('&')
     }
@@ -45,6 +48,10 @@ export default function Home() {
           <div className={styles.inputGroup}>
             <label>Filter Text:</label>
             <input type='text' value={filter} onChange={e=>setFilter(e.target.value)} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Number of Lines:</label>
+            <input type='number' value={lines} onChange={e=>setLines(e.target.value)} />
           </div>
           <div className={styles.submit}>
             <button role='submit' onClick={() => loadResults()}>Submit</button>
